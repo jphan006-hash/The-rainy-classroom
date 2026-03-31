@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silent Classroom Murder Mystery</title>
+<title>Murder Mystery Classroom</title>
 <style>
 body {
   margin: 0;
@@ -24,8 +24,8 @@ body {
 #desk {
   position: absolute;
   bottom: 0;
-  left: 25%;
-  width: 500px;
+  left: 35%;
+  width: 400px;
   height: 60px;
   background: #3e2723;
   border-radius: 10px;
@@ -41,46 +41,17 @@ body {
   transition: transform 0.3s;
 }
 
-.student:hover {
-  transform: scale(1.1);
-}
+.student:hover { transform: scale(1.1); }
+.detective { border: 3px solid yellow; }
 
-.detective {
-  border: 3px solid yellow;
-}
-
-/* Shadow suspense */
-#detectiveShadow, #killerShadow {
+/* Victim Mr. Jean */
+#mrJean {
   position: absolute;
+  width: 80px;
+  height: 160px;
   bottom: 0;
-  width: 100px;
-  height: 200px;
-  background: rgba(0,0,0,0.8);
-  border-radius: 20px;
-}
-
-#detectiveShadow {
-  left: 30%;
-  transform: scaleX(-1);
-  opacity: 0;
-  animation: fadeInShadow 3s forwards;
-}
-
-#killerShadow {
-  right: 30%;
-  opacity: 0;
-  animation: revealKiller 3s forwards;
-  animation-delay: 4s;
-}
-
-@keyframes fadeInShadow {
-  0% {opacity:0; transform: translateY(50px);}
-  100% {opacity:1; transform: translateY(0);}
-}
-
-@keyframes revealKiller {
-  0% {opacity:0; transform: translateY(50px);}
-  100% {opacity:1; transform: translateY(0);}
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* Dialogue box */
@@ -98,6 +69,37 @@ body {
   font-size: 1.1em;
   display: none;
 }
+
+/* Shadow suspense */
+#detectiveShadow, #killerShadow {
+  position: absolute;
+  bottom: 0;
+  width: 100px;
+  height: 200px;
+  background: rgba(0,0,0,0.8);
+  border-radius: 20px;
+}
+#detectiveShadow {
+  left: 30%;
+  transform: scaleX(-1);
+  opacity: 0;
+  animation: fadeInShadow 3s forwards;
+}
+#killerShadow {
+  right: 30%;
+  opacity: 0;
+  animation: revealKiller 3s forwards;
+  animation-delay: 4s;
+}
+
+@keyframes fadeInShadow {
+  0% {opacity:0; transform: translateY(50px);}
+  100% {opacity:1; transform: translateY(0);}
+}
+@keyframes revealKiller {
+  0% {opacity:0; transform: translateY(50px);}
+  100% {opacity:1; transform: translateY(0);}
+}
 </style>
 </head>
 <body>
@@ -105,54 +107,58 @@ body {
 <div id="scene">
   <div id="desk"></div>
 
-  <!-- Suspense shadows -->
+  <!-- Shadows -->
   <div id="detectiveShadow"></div>
   <div id="killerShadow"></div>
 
-  <!-- Students images -->
-  <img src="https://i.ibb.co/0Fz3s2K/boy1.png" class="student detective" style="bottom:0; left:30%;" id="boy1">
-  <img src="https://i.ibb.co/0Fz3s2K/boy2.png" class="student" style="bottom:0; left:10%;" id="boy2">
-  <img src="https://i.ibb.co/0Fz3s2K/boy3.png" class="student" style="bottom:0; left:20%;" id="boy3">
-  <img src="https://i.ibb.co/0Fz3s2K/boy4.png" class="student" style="bottom:0; left:40%;" id="boy4">
-  <img src="https://i.ibb.co/0Fz3s2K/boy5.png" class="student" style="bottom:0; left:50%;" id="boy5">
-  <img src="https://i.ibb.co/0Fz3s2K/boy6.png" class="student" style="bottom:0; left:60%;" id="boy6">
-  <img src="https://i.ibb.co/0Fz3s2K/boy7.png" class="student" style="bottom:0; left:70%;" id="boy7">
+  <!-- Boys 1-7 -->
+  <img src="https://i.ibb.co/fn2nWxG/boy1-detective.png" class="student detective" style="bottom:0; left:30%;" id="boy1">
+  <img src="https://i.ibb.co/F3RjD0K/boy2-suit.png" class="student" style="bottom:0; left:10%;" id="boy2">
+  <img src="https://i.ibb.co/1nqpxS9/boy3-suit.png" class="student" style="bottom:0; left:20%;" id="boy3">
+  <img src="https://i.ibb.co/YbXzLZH/boy4-suit.png" class="student" style="bottom:0; left:40%;" id="boy4">
+  <img src="https://i.ibb.co/VHfZgPt/boy5-suit.png" class="student" style="bottom:0; left:50%;" id="boy5">
+  <img src="https://i.ibb.co/xFCr0m2/boy6-suit.png" class="student" style="bottom:0; left:60%;" id="boy6">
+  <img src="https://i.ibb.co/JyVxRns/boy7-suit.png" class="student" style="bottom:0; left:70%;" id="boy7">
 
-  <img src="https://i.ibb.co/0Fz3s2K/girl1.png" class="student" style="bottom:0; left:15%;" id="girl1">
-  <img src="https://i.ibb.co/0Fz3s2K/girl2.png" class="student" style="bottom:0; left:25%;" id="girl2">
-  <img src="https://i.ibb.co/0Fz3s2K/girl3.png" class="student" style="bottom:0; left:35%;" id="girl3">
-  <img src="https://i.ibb.co/0Fz3s2K/girl4.png" class="student" style="bottom:0; left:45%;" id="girl4">
-  <img src="https://i.ibb.co/0Fz3s2K/girl5.png" class="student" style="bottom:0; left:55%;" id="girl5">
-  <img src="https://i.ibb.co/0Fz3s2K/girl6.png" class="student" style="bottom:0; left:65%;" id="girl6">
+  <!-- Girls 1-6 -->
+  <img src="https://i.ibb.co/wc7CwVF/girl1-pink.png" class="student" style="bottom:0; left:15%;" id="girl1">
+  <img src="https://i.ibb.co/JvLkC2s/girl2-pink.png" class="student" style="bottom:0; left:25%;" id="girl2">
+  <img src="https://i.ibb.co/QFZ5f1X/girl3-pink.png" class="student" style="bottom:0; left:35%;" id="girl3">
+  <img src="https://i.ibb.co/YT5TgqV/girl4-pink.png" class="student" style="bottom:0; left:45%;" id="girl4">
+  <img src="https://i.ibb.co/fqY9qX0/girl5-pink.png" class="student" style="bottom:0; left:55%;" id="girl5">
+  <img src="https://i.ibb.co/fkyQF0r/girl6-pink.png" class="student" style="bottom:0; left:65%;" id="girl6">
+
+  <!-- Victim -->
+  <img src="https://i.ibb.co/0Fz3s2K/mrJean.png" id="mrJean">
 </div>
 
 <div id="dialogue"></div>
 
 <script>
-// Alibis
-const alibis = {
-  "boy1": "Detective boy1 was investigating the office.",
-  "boy2": "boy2 was in the library.",
-  "boy3": "boy3 was attending chemistry class.",
-  "boy4": "boy4 was in cafeteria.",
-  "boy5": "boy5 was in gym class.",
-  "boy6": "boy6 was talking to the janitor.",
-  "boy7": "boy7 has no alibi. Suspicious!",
-  "girl1": "girl1 was in the library.",
-  "girl2": "girl2 was in art room.",
-  "girl3": "girl3 was in computer lab.",
-  "girl4": "girl4 was in cafeteria.",
-  "girl5": "girl5 was helping teacher.",
-  "girl6": "girl6 was in music room."
+// Alibis + Emotions
+const students = {
+  "boy1": {alibi:"Detective boy1 was investigating the office.", emotion:"Focused and determined."},
+  "boy2": {alibi:"boy2 was in the library.", emotion:"Nervous."},
+  "boy3": {alibi:"boy3 was attending chemistry class.", emotion:"Confident."},
+  "boy4": {alibi:"boy4 was in cafeteria.", emotion:"Distracted."},
+  "boy5": {alibi:"boy5 was in gym class.", emotion:"Relaxed."},
+  "boy6": {alibi:"boy6 was talking to the janitor.", emotion:"Curious."},
+  "boy7": {alibi:"boy7 has no alibi. Suspicious!", emotion:"Smug and anxious."},
+  "girl1": {alibi:"girl1 was in the library.", emotion:"Anxious."},
+  "girl2": {alibi:"girl2 was in art room.", emotion:"Calm."},
+  "girl3": {alibi:"girl3 was in computer lab.", emotion:"Focused."},
+  "girl4": {alibi:"girl4 was in cafeteria.", emotion:"Shocked."},
+  "girl5": {alibi:"girl5 was helping teacher.", emotion:"Nervous."},
+  "girl6": {alibi:"girl6 was in music room.", emotion:"Surprised."}
 };
 
 const dialogueBox = document.getElementById('dialogue');
 const boy7 = document.getElementById('boy7');
+const boy1 = document.getElementById('boy1');
+const mrJean = document.getElementById('mrJean');
 const detectiveShadow = document.getElementById('detectiveShadow');
 const killerShadow = document.getElementById('killerShadow');
-const boy1 = document.getElementById('boy1');
 
-// Suspense dialogue
 const lines = [
   "Detective boy1 enters the room silently...",
   "He places both hands on the desk, shadowed by the dim light.",
@@ -161,51 +167,56 @@ const lines = [
 ];
 
 let index = 0;
-function showDialogue() {
-  if(index < lines.length){
-    dialogueBox.style.display = 'block';
+function showDialogue(){
+  if(index<lines.length){
+    dialogueBox.style.display='block';
     dialogueBox.innerText = lines[index];
     index++;
-    setTimeout(() => {
-      dialogueBox.style.display = 'none';
-      setTimeout(showDialogue, 2000);
-    }, 4000);
-  } else {
-    detectiveShadow.style.display = 'none';
-    killerShadow.style.display = 'none';
-    animateBoy7();
+    setTimeout(()=>{
+      dialogueBox.style.display='none';
+      setTimeout(showDialogue,2000);
+    },4000);
+  }else{
+    detectiveShadow.style.display='none';
+    killerShadow.style.display='none';
+    animateCrime();
   }
 }
 
-// Animate boy7 doing the crime
-function animateBoy7(){
-  let pos = 70; // left %
+// Animate boy7 committing the crime
+function animateCrime(){
+  let pos = 70;
   const interval = setInterval(()=>{
-    if(pos <= 45){
+    if(pos <= 48){
       clearInterval(interval);
-      dialogueBox.style.display = 'block';
-      dialogueBox.innerText = "Boy7 sneaks behind the desk to commit the crime!";
-      setTimeout(()=>{ dialogueBox.style.display = 'none'; }, 4000);
-    } else {
-      pos -= 0.5;
-      boy7.style.left = pos + "%";
+      dialogueBox.style.display='block';
+      dialogueBox.innerText = "Boy7 pushes Mr. Jean! The crime occurs!";
+      mrJean.style.transition="bottom 0.5s";
+      mrJean.style.bottom="50px";
+      setTimeout(()=>{ dialogueBox.style.display='none'; },4000);
+      // Detective reacts
+      boy1.style.transition="transform 0.5s";
+      boy1.style.transform="translateY(-20px)";
+      setTimeout(()=>{ boy1.style.transform="translateY(0)"; },1000);
+    }else{
+      pos-=0.5;
+      boy7.style.left = pos+"%";
     }
-  }, 50);
+  },50);
 }
 
-// Clickable students for alibis
+// Clickable students with emotion + alibi
 document.querySelectorAll('.student').forEach(student=>{
   student.addEventListener('click', ()=>{
-    const id = student.id;
-    dialogueBox.innerText = alibis[id];
+    const info = students[student.id];
+    dialogueBox.innerText = info.alibi + "\nEmotion: " + info.emotion;
     dialogueBox.style.display = 'block';
-    if(id==="boy7"){ dialogueBox.style.background="rgba(255,0,0,0.8)"; } 
-    else { dialogueBox.style.background="rgba(0,0,0,0.8)"; }
+    dialogueBox.style.background = (student.id==="boy7") ? "rgba(255,0,0,0.8)" : "rgba(0,0,0,0.8)";
     setTimeout(()=>{ dialogueBox.style.display='none'; },4000);
   });
 });
 
-setTimeout(showDialogue, 1000);
+setTimeout(showDialogue,1000);
 </script>
 
 </body>
