@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive Murder Mystery</title>
+<title>Silent Classroom Murder Mystery</title>
 <style>
 body {
   margin: 0;
@@ -20,7 +20,18 @@ body {
   background-size: cover;
 }
 
-/* Students as clickable images */
+/* Desk */
+#desk {
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 500px;
+  height: 60px;
+  background: #3e2723;
+  border-radius: 10px;
+}
+
+/* Students */
 .student {
   position: absolute;
   width: 80px;
@@ -38,7 +49,41 @@ body {
   border: 3px solid yellow;
 }
 
-/* Dialogue box for alibis or story */
+/* Shadow suspense */
+#detectiveShadow, #killerShadow {
+  position: absolute;
+  bottom: 0;
+  width: 100px;
+  height: 200px;
+  background: rgba(0,0,0,0.8);
+  border-radius: 20px;
+}
+
+#detectiveShadow {
+  left: 30%;
+  transform: scaleX(-1);
+  opacity: 0;
+  animation: fadeInShadow 3s forwards;
+}
+
+#killerShadow {
+  right: 30%;
+  opacity: 0;
+  animation: revealKiller 3s forwards;
+  animation-delay: 4s;
+}
+
+@keyframes fadeInShadow {
+  0% {opacity:0; transform: translateY(50px);}
+  100% {opacity:1; transform: translateY(0);}
+}
+
+@keyframes revealKiller {
+  0% {opacity:0; transform: translateY(50px);}
+  100% {opacity:1; transform: translateY(0);}
+}
+
+/* Dialogue box */
 #dialogue {
   position: absolute;
   bottom: 20px;
@@ -53,35 +98,26 @@ body {
   font-size: 1.1em;
   display: none;
 }
-
-/* Desk for detective scene */
-#desk {
-  position: absolute;
-  bottom: 0;
-  left: 25%;
-  width: 500px;
-  height: 60px;
-  background: #3e2723;
-  border-radius: 10px;
-}
-
 </style>
 </head>
 <body>
 
 <div id="scene">
-  <!-- Desk -->
   <div id="desk"></div>
 
-  <!-- Students (replace URLs with actual images) -->
-  <img src="https://i.ibb.co/0Fz3s2K/boy1.png" class="student detective" style="bottom:0; left:10%;" id="boy1">
-  <img src="https://i.ibb.co/0Fz3s2K/boy2.png" class="student" style="bottom:0; left:20%;" id="boy2">
-  <img src="https://i.ibb.co/0Fz3s2K/boy3.png" class="student" style="bottom:0; left:30%;" id="boy3">
+  <!-- Suspense shadows -->
+  <div id="detectiveShadow"></div>
+  <div id="killerShadow"></div>
+
+  <!-- Students images -->
+  <img src="https://i.ibb.co/0Fz3s2K/boy1.png" class="student detective" style="bottom:0; left:30%;" id="boy1">
+  <img src="https://i.ibb.co/0Fz3s2K/boy2.png" class="student" style="bottom:0; left:10%;" id="boy2">
+  <img src="https://i.ibb.co/0Fz3s2K/boy3.png" class="student" style="bottom:0; left:20%;" id="boy3">
   <img src="https://i.ibb.co/0Fz3s2K/boy4.png" class="student" style="bottom:0; left:40%;" id="boy4">
   <img src="https://i.ibb.co/0Fz3s2K/boy5.png" class="student" style="bottom:0; left:50%;" id="boy5">
   <img src="https://i.ibb.co/0Fz3s2K/boy6.png" class="student" style="bottom:0; left:60%;" id="boy6">
   <img src="https://i.ibb.co/0Fz3s2K/boy7.png" class="student" style="bottom:0; left:70%;" id="boy7">
-  
+
   <img src="https://i.ibb.co/0Fz3s2K/girl1.png" class="student" style="bottom:0; left:15%;" id="girl1">
   <img src="https://i.ibb.co/0Fz3s2K/girl2.png" class="student" style="bottom:0; left:25%;" id="girl2">
   <img src="https://i.ibb.co/0Fz3s2K/girl3.png" class="student" style="bottom:0; left:35%;" id="girl3">
@@ -93,42 +129,83 @@ body {
 <div id="dialogue"></div>
 
 <script>
-// Alibis for each student
+// Alibis
 const alibis = {
   "boy1": "Detective boy1 was investigating the office.",
-  "boy2": "boy2 was in the library at the time of the incident.",
-  "boy3": "boy3 was attending a chemistry class.",
-  "boy4": "boy4 was in the cafeteria.",
+  "boy2": "boy2 was in the library.",
+  "boy3": "boy3 was attending chemistry class.",
+  "boy4": "boy4 was in cafeteria.",
   "boy5": "boy5 was in gym class.",
-  "boy6": "boy6 was talking to the janitor in the hallway.",
-  "boy7": "boy7 has no one to back his alibi. Suspicious!",
-  "girl1": "girl1 was in the library with boy2.",
-  "girl2": "girl2 was in the art room.",
+  "boy6": "boy6 was talking to the janitor.",
+  "boy7": "boy7 has no alibi. Suspicious!",
+  "girl1": "girl1 was in the library.",
+  "girl2": "girl2 was in art room.",
   "girl3": "girl3 was in computer lab.",
-  "girl4": "girl4 was in the cafeteria.",
-  "girl5": "girl5 was helping a teacher in another classroom.",
-  "girl6": "girl6 was practicing music in the music room."
+  "girl4": "girl4 was in cafeteria.",
+  "girl5": "girl5 was helping teacher.",
+  "girl6": "girl6 was in music room."
 };
 
 const dialogueBox = document.getElementById('dialogue');
+const boy7 = document.getElementById('boy7');
+const detectiveShadow = document.getElementById('detectiveShadow');
+const killerShadow = document.getElementById('killerShadow');
+const boy1 = document.getElementById('boy1');
 
-// Make all students clickable
-document.querySelectorAll('.student').forEach(student => {
-  student.addEventListener('click', () => {
+// Suspense dialogue
+const lines = [
+  "Detective boy1 enters the room silently...",
+  "He places both hands on the desk, shadowed by the dim light.",
+  "A figure appears on the other side, mysterious at first...",
+  "The shadow reveals itself... it’s boy7! The culprit!"
+];
+
+let index = 0;
+function showDialogue() {
+  if(index < lines.length){
+    dialogueBox.style.display = 'block';
+    dialogueBox.innerText = lines[index];
+    index++;
+    setTimeout(() => {
+      dialogueBox.style.display = 'none';
+      setTimeout(showDialogue, 2000);
+    }, 4000);
+  } else {
+    detectiveShadow.style.display = 'none';
+    killerShadow.style.display = 'none';
+    animateBoy7();
+  }
+}
+
+// Animate boy7 doing the crime
+function animateBoy7(){
+  let pos = 70; // left %
+  const interval = setInterval(()=>{
+    if(pos <= 45){
+      clearInterval(interval);
+      dialogueBox.style.display = 'block';
+      dialogueBox.innerText = "Boy7 sneaks behind the desk to commit the crime!";
+      setTimeout(()=>{ dialogueBox.style.display = 'none'; }, 4000);
+    } else {
+      pos -= 0.5;
+      boy7.style.left = pos + "%";
+    }
+  }, 50);
+}
+
+// Clickable students for alibis
+document.querySelectorAll('.student').forEach(student=>{
+  student.addEventListener('click', ()=>{
     const id = student.id;
     dialogueBox.innerText = alibis[id];
     dialogueBox.style.display = 'block';
-    // Special effect if boy7 clicked
-    if(id === "boy7") {
-      dialogueBox.style.background = "rgba(255,0,0,0.8)";
-    } else {
-      dialogueBox.style.background = "rgba(0,0,0,0.8)";
-    }
-    setTimeout(() => {
-      dialogueBox.style.display = 'none';
-    }, 4000);
+    if(id==="boy7"){ dialogueBox.style.background="rgba(255,0,0,0.8)"; } 
+    else { dialogueBox.style.background="rgba(0,0,0,0.8)"; }
+    setTimeout(()=>{ dialogueBox.style.display='none'; },4000);
   });
 });
+
+setTimeout(showDialogue, 1000);
 </script>
 
 </body>
