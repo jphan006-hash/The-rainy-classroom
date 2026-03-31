@@ -3,163 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Silent Classroom - Detective</title>
+<title>Silent Classroom Animation</title>
 <style>
-  body {
-    margin: 0;
-    overflow: hidden;
-    font-family: 'Arial', sans-serif;
-    background: #1a1a1a;
-    color: white;
-  }
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: #1a1a1a;
+}
 
-  #scene {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background: url('https://i.ibb.co/8D3rY7x/rainy-classroom.jpg') no-repeat center center;
-    background-size: cover;
-  }
+/* Scene background */
+#scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: url('https://i.ibb.co/8D3rY7x/rainy-classroom.jpg') no-repeat center center;
+  background-size: cover;
+}
 
-  .student {
-    position: absolute;
-    width: 50px;
-    height: 100px;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 100px;
-    color: white;
-    font-weight: bold;
-    cursor: default;
-  }
+/* Students as images */
+.student {
+  position: absolute;
+  width: 80px;
+  height: 160px;
+  border-radius: 10px;
+  cursor: default;
+  transition: transform 0.5s;
+}
 
-  .boy { background: #111; }  
-  .girl { background: #ff99cc; }  
-  .detective { border: 3px solid yellow; } /* Detective highlight */
+/* Detective highlight */
+.detective {
+  border: 3px solid yellow;
+}
 
-  #dialogue {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.7);
-    padding: 20px;
-    border-radius: 10px;
-    width: 60%;
-    text-align: center;
-    font-size: 1.2em;
-    display: none;
-  }
+/* Desk */
+#desk {
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 500px;
+  height: 60px;
+  background: #3e2723;
+  border-radius: 10px;
+  opacity: 0;
+  animation: deskFade 2s forwards;
+  animation-delay: 1s;
+}
 
-  .fade-in {
-    animation: fadeIn 2s forwards;
-  }
+@keyframes deskFade {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
 
-  @keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
+/* Shadow fade-in */
+#detectiveShadow {
+  position: absolute;
+  bottom: 0;
+  left: 30%;
+  width: 100px;
+  height: 200px;
+  background: rgba(0,0,0,0.8);
+  border-radius: 20px;
+  transform: scaleX(-1);
+  opacity: 0;
+  animation: fadeInShadow 3s forwards;
+}
 
-  #rain {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background-image: url('https://i.ibb.co/N6LztgR/rain.gif');
-    background-size: cover;
-    opacity: 0.4;
-  }
+#killerShadow {
+  position: absolute;
+  bottom: 0;
+  right: 30%;
+  width: 100px;
+  height: 200px;
+  background: rgba(0,0,0,0.8);
+  border-radius: 20px;
+  opacity: 0;
+  animation: revealKiller 3s forwards;
+  animation-delay: 4s;
+}
 
-  /* Clickable clues */
-  .clue {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background: orange;
-    border-radius: 50%;
-    cursor: pointer;
-    display: none;
-  }
+@keyframes fadeInShadow {
+  0% {opacity:0; transform: translateY(50px);}
+  100% {opacity:1; transform: translateY(0);}
+}
 
+@keyframes revealKiller {
+  0% {opacity:0; transform: translateY(50px);}
+  100% {opacity:1; transform: translateY(0);}
+}
+
+/* Dialogue box */
+#dialogue {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 60%;
+  text-align: center;
+  font-size: 1.2em;
+  display: none;
+}
 </style>
 </head>
 <body>
 
 <div id="scene">
-  <div id="rain"></div>
 
-  <!-- Boys -->
-  <div class="student boy detective" style="top: 60%; left: 5%;">boy1</div>
-  <div class="student boy" style="top: 60%; left: 12%;">boy2</div>
-  <div class="student boy" style="top: 60%; left: 19%;">boy3</div>
-  <div class="student boy" style="top: 60%; left: 26%;">boy4</div>
-  <div class="student boy" style="top: 60%; left: 33%;">boy5</div>
-  <div class="student boy" style="top: 60%; left: 40%;">boy6</div>
-  <div class="student boy" style="top: 60%; left: 47%;">boy7</div>
-  <div class="student boy" style="top: 60%; left: 54%;">boy8</div>
-  <div class="student boy" style="top: 60%; left: 61%;">boy9</div>
-  <div class="student boy" style="top: 60%; left: 68%;">boy10</div>
-  <div class="student boy" style="top: 60%; left: 75%;">boy11</div>
-  <div class="student boy" style="top: 60%; left: 82%;">boy12</div>
-  <div class="student boy" style="top: 60%; left: 89%;">boy13</div>
-  <div class="student boy" style="top: 60%; left: 96%;">boy14</div>
-  <div class="student boy" style="top: 50%; left: 50%;">boy15</div>
+  <!-- Desk -->
+  <div id="desk"></div>
 
-  <!-- Girls -->
-  <div class="student girl" style="top: 40%; left: 10%;">girl1</div>
-  <div class="student girl" style="top: 40%; left: 25%;">girl2</div>
-  <div class="student girl" style="top: 40%; left: 40%;">girl3</div>
-  <div class="student girl" style="top: 40%; left: 55%;">girl4</div>
-  <div class="student girl" style="top: 40%; left: 70%;">girl5</div>
-  <div class="student girl" style="top: 40%; left: 85%;">girl6</div>
+  <!-- Shadows for suspense -->
+  <div id="detectiveShadow"></div>
+  <div id="killerShadow"></div>
 
-  <!-- Dialogue -->
-  <div id="dialogue"></div>
-
-  <!-- Clues -->
-  <div class="clue" id="clue1" style="top: 50%; left: 30%;"></div>
-  <div class="clue" id="clue2" style="top: 50%; left: 45%;"></div>
-  <div class="clue" id="clue3" style="top: 50%; left: 60%;"></div>
-
+  <!-- Students as human images (replace URLs with your images) -->
+  <img src="https://i.ibb.co/0Fz3s2K/boy1.png" class="student detective" style="bottom:0; left:30%;" id="boy1">
+  <img src="https://i.ibb.co/0Fz3s2K/boy2.png" class="student" style="bottom:0; left:15%;">
+  <img src="https://i.ibb.co/0Fz3s2K/boy3.png" class="student" style="bottom:0; left:20%;">
+  <img src="https://i.ibb.co/0Fz3s2K/boy4.png" class="student" style="bottom:0; left:25%;">
+  <img src="https://i.ibb.co/0Fz3s2K/boy5.png" class="student" style="bottom:0; left:35%;">
+  <img src="https://i.ibb.co/0Fz3s2K/boy7.png" class="student" style="bottom:0; left:60%;" id="boy7">
+  <img src="https://i.ibb.co/0Fz3s2K/girl1.png" class="student" style="bottom:0; left:10%;">
+  <img src="https://i.ibb.co/0Fz3s2K/girl2.png" class="student" style="bottom:0; left:20%;">
+  <img src="https://i.ibb.co/0Fz3s2K/girl3.png" class="student" style="bottom:0; left:30%;">
+  <img src="https://i.ibb.co/0Fz3s2K/girl4.png" class="student" style="bottom:0; left:40%;">
 </div>
 
+<div id="dialogue"></div>
+
 <script>
-  const dialogueBox = document.getElementById('dialogue');
-  const dialogues = [
-    "Detective boy1 notices something strange in Mr. Jean's office...",
-    "Footprints lead to a mysterious corner of the room.",
-    "A broken watch lies under the desk.",
-    "An envelope with a cryptic message lies on the table.",
-    "Who among the students is hiding the secret?"
-  ];
+const dialogue = document.getElementById('dialogue');
+const boy1 = document.getElementById('boy1');
+const boy7 = document.getElementById('boy7');
+const detectiveShadow = document.getElementById('detectiveShadow');
+const killerShadow = document.getElementById('killerShadow');
 
-  let index = 0;
-  function showDialogue() {
-    if(index < dialogues.length){
-      dialogueBox.style.display = 'block';
-      dialogueBox.classList.add('fade-in');
-      dialogueBox.innerText = dialogues[index];
-      index++;
-      setTimeout(() => {
-        dialogueBox.classList.remove('fade-in');
-        dialogueBox.style.display = 'none';
-        setTimeout(showDialogue, 1000);
-      }, 4000);
-    } else {
-      // Show clues after dialogue
-      document.querySelectorAll('.clue').forEach(c => c.style.display = 'block');
-    }
+// Dialogue sequence
+const lines = [
+  "Detective boy1 enters the room silently...",
+  "He places both hands on the desk, shadowed by the dim light.",
+  "A figure appears on the other side, mysterious at first...",
+  "The shadow reveals itself... it’s boy7! The culprit!"
+];
+
+let index = 0;
+function showDialogue() {
+  if(index < lines.length) {
+    dialogue.style.display = 'block';
+    dialogue.innerText = lines[index];
+    index++;
+    setTimeout(() => {
+      dialogue.style.display = 'none';
+      setTimeout(showDialogue, 2000);
+    }, 4000);
+  } else {
+    // Replace shadows with images
+    detectiveShadow.style.display = 'none';
+    killerShadow.style.display = 'none';
+    // Animate hands on desk
+    boy1.style.transform = "translateY(-10px)";
+    boy7.style.transform = "translateY(-5px)";
   }
+}
 
-  showDialogue();
-
-  // Clues interactions
-  document.getElementById('clue1').addEventListener('click', () => alert("Footprints discovered by boy1!"));
-  document.getElementById('clue2').addEventListener('click', () => alert("Broken watch found!"));
-  document.getElementById('clue3').addEventListener('click', () => alert("Cryptic envelope opened!"));
-
+setTimeout(showDialogue, 3000);
 </script>
 
 </body>
