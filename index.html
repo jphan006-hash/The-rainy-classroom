@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Silent Classroom - Detective</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background: #1a1a1a;
+    color: white;
+  }
+
+  #scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: url('https://i.ibb.co/8D3rY7x/rainy-classroom.jpg') no-repeat center center;
+    background-size: cover;
+  }
+
+  .student {
+    position: absolute;
+    width: 50px;
+    height: 100px;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 100px;
+    color: white;
+    font-weight: bold;
+    cursor: default;
+  }
+
+  .boy { background: #111; }  
+  .girl { background: #ff99cc; }  
+  .detective { border: 3px solid yellow; } /* Detective highlight */
+
+  #dialogue {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+    text-align: center;
+    font-size: 1.2em;
+    display: none;
+  }
+
+  .fade-in {
+    animation: fadeIn 2s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  #rain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: url('https://i.ibb.co/N6LztgR/rain.gif');
+    background-size: cover;
+    opacity: 0.4;
+  }
+
+  /* Clickable clues */
+  .clue {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: orange;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+  }
+
+</style>
+</head>
+<body>
+
+<div id="scene">
+  <div id="rain"></div>
+
+  <!-- Boys -->
+  <div class="student boy detective" style="top: 60%; left: 5%;">boy1</div>
+  <div class="student boy" style="top: 60%; left: 12%;">boy2</div>
+  <div class="student boy" style="top: 60%; left: 19%;">boy3</div>
+  <div class="student boy" style="top: 60%; left: 26%;">boy4</div>
+  <div class="student boy" style="top: 60%; left: 33%;">boy5</div>
+  <div class="student boy" style="top: 60%; left: 40%;">boy6</div>
+  <div class="student boy" style="top: 60%; left: 47%;">boy7</div>
+  <div class="student boy" style="top: 60%; left: 54%;">boy8</div>
+  <div class="student boy" style="top: 60%; left: 61%;">boy9</div>
+  <div class="student boy" style="top: 60%; left: 68%;">boy10</div>
+  <div class="student boy" style="top: 60%; left: 75%;">boy11</div>
+  <div class="student boy" style="top: 60%; left: 82%;">boy12</div>
+  <div class="student boy" style="top: 60%; left: 89%;">boy13</div>
+  <div class="student boy" style="top: 60%; left: 96%;">boy14</div>
+  <div class="student boy" style="top: 50%; left: 50%;">boy15</div>
+
+  <!-- Girls -->
+  <div class="student girl" style="top: 40%; left: 10%;">girl1</div>
+  <div class="student girl" style="top: 40%; left: 25%;">girl2</div>
+  <div class="student girl" style="top: 40%; left: 40%;">girl3</div>
+  <div class="student girl" style="top: 40%; left: 55%;">girl4</div>
+  <div class="student girl" style="top: 40%; left: 70%;">girl5</div>
+  <div class="student girl" style="top: 40%; left: 85%;">girl6</div>
+
+  <!-- Dialogue -->
+  <div id="dialogue"></div>
+
+  <!-- Clues -->
+  <div class="clue" id="clue1" style="top: 50%; left: 30%;"></div>
+  <div class="clue" id="clue2" style="top: 50%; left: 45%;"></div>
+  <div class="clue" id="clue3" style="top: 50%; left: 60%;"></div>
+
+</div>
+
+<script>
+  const dialogueBox = document.getElementById('dialogue');
+  const dialogues = [
+    "Detective boy1 notices something strange in Mr. Jean's office...",
+    "Footprints lead to a mysterious corner of the room.",
+    "A broken watch lies under the desk.",
+    "An envelope with a cryptic message lies on the table.",
+    "Who among the students is hiding the secret?"
+  ];
+
+  let index = 0;
+  function showDialogue() {
+    if(index < dialogues.length){
+      dialogueBox.style.display = 'block';
+      dialogueBox.classList.add('fade-in');
+      dialogueBox.innerText = dialogues[index];
+      index++;
+      setTimeout(() => {
+        dialogueBox.classList.remove('fade-in');
+        dialogueBox.style.display = 'none';
+        setTimeout(showDialogue, 1000);
+      }, 4000);
+    } else {
+      // Show clues after dialogue
+      document.querySelectorAll('.clue').forEach(c => c.style.display = 'block');
+    }
+  }
+
+  showDialogue();
+
+  // Clues interactions
+  document.getElementById('clue1').addEventListener('click', () => alert("Footprints discovered by boy1!"));
+  document.getElementById('clue2').addEventListener('click', () => alert("Broken watch found!"));
+  document.getElementById('clue3').addEventListener('click', () => alert("Cryptic envelope opened!"));
+
+</script>
+
+</body>
+</html>
