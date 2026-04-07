@@ -1,178 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Deadly Despair in the Rain</title>
-<style>
-body {
-  margin: 0;
-  background: black;
-  color: white;
-  font-family: Arial;
-  overflow: hidden;
-  cursor: none;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frog Tongue Jump Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #a3d9ff; /* Sky color */
+            font-family: 'Arial', sans-serif;
+        }
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(to bottom, #a3d9ff 0%, #e0f7fa 100%);
+        }
+        
+        /* The Pillow/Lilypad */
+        #pillow {
+            width: 150px;
+            height: 50px;
+            background-color: #4CAF50;
+            border-radius: 50px;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 10px 0 #2e7d32;
+        }
 
-#crosshair {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid white;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 5;
-}
+        /* The Frog */
+        #frog {
+            width: 60px;
+            height: 50px;
+            background-color: #66bb6a;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: bottom 0.5s ease-out;
+            z-index: 10;
+        }
+        
+        /* Frog Eyes */
+        #frog::before, #frog::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            top: -10px;
+        }
+        #frog::before { left: 5px; }
+        #frog::after { right: 5px; }
+        
+        /* Frog Pupils */
+        #frog-pupil::before, #frog-pupil::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: black;
+            border-radius: 50%;
+            top: -5px;
+            z-index: 11;
+        }
+        #frog-pupil::before { left: 10px; }
+        #frog-pupil::after { right: 10px; }
 
-#ui {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 4;
-}
+        /* The Tongue (hidden by default) */
+        #tongue {
+            width: 10px;
+            height: 0px;
+            background-color: #ff5252;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+            transition: height 0.2s ease-in-out;
+            z-index: 5;
+        }
 
-#dialogue {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0,0,0,0.8);
-  padding: 15px;
-  z-index: 4;
-}
+        /* Tongue extension class */
+        .jump #tongue {
+            height: 60px;
+            top: -40px; /* Extends from mouth */
+        }
 
-.statement {
-  position: absolute;
-  padding: 10px;
-  border: 1px solid white;
-  background: rgba(0,0,0,0.6);
-}
-</style>
+        /* Score Display */
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
-<div id="crosshair"></div>
-<div id="ui"></div>
-<div id="dialogue"></div>
+<div id="game-container">
+    <div id="score">Height: 0</div>
+    <div id="pillow"></div>
+    <div id="frog">
+        <div id="frog-pupil"></div>
+        <div id="tongue"></div>
+    </div>
+</div>
 
 <script>
-const crosshair = document.getElementById("crosshair");
-const ui = document.getElementById("ui");
-const dialogue = document.getElementById("dialogue");
+    const frog = document.getElementById('frog');
+    const scoreDisplay = document.getElementById('score');
+    let isJumping = false;
+    let score = 0;
 
-let health = 5;
-let score = 0;
-let phase = "story";
+    function jump() {
+        if (isJumping) return;
+        isJumping = true;
+        
+        // Add tongue class
+        frog.classList.add('jump');
+        
+        // Move frog up
+        frog.style.bottom = '400px'; 
+        
+        // Update Score
+        score++;
+        scoreDisplay.innerText = "Height: " + score;
 
-// Characters
-const characters = [
-  {name:"Aiko", line:"I stayed in the hall..."},
-  {name:"Ren", line:"I heard something strange."},
-  {name:"Mika", line:"This makes no sense..."}
-];
+        // Bring frog down & hide tongue
+        setTimeout(() => {
+            frog.style.bottom = '100px';
+            frog.classList.remove('jump');
+            isJumping = false;
+        }, 500);
+    }
 
-// Follow mouse
-document.addEventListener("mousemove", e => {
-  crosshair.style.left = e.clientX - 10 + "px";
-  crosshair.style.top = e.clientY - 10 + "px";
-});
-
-function updateUI(){
-  ui.innerHTML = `Health: ${health} | Score: ${score}`;
-}
-
-// STORY MODE
-let storyIndex = 0;
-const storyLines = [
-  "Rain pours outside the mansion...",
-  "30 guests gather inside...",
-  "A maid is found dead...",
-  "The detective steps forward...",
-  "A deadly trial begins..."
-];
-
-function nextStory(){
-  if(storyIndex < storyLines.length){
-    dialogue.innerText = storyLines[storyIndex];
-    storyIndex++;
-  } else {
-    startDebate();
-  }
-}
-
-document.addEventListener("click", ()=>{
-  if(phase === "story") nextStory();
-});
-
-// DEBATE MODE
-const statements = [
-  {text:"I never left the room!", lie:true},
-  {text:"I heard the scream.", lie:false},
-  {text:"The maid was alive.", lie:false},
-  {text:"No one moved.", lie:true}
-];
-
-function startDebate(){
-  phase = "debate";
-  dialogue.innerText = "Shoot the lies!";
-  updateUI();
-
-  statements.forEach(s=>{
-    const div = document.createElement("div");
-    div.className = "statement";
-    div.innerText = s.text;
-    div.style.left = Math.random()*window.innerWidth+"px";
-    div.style.top = Math.random()*window.innerHeight+"px";
-
-    div.onclick = ()=>shoot(div,s);
-    document.body.appendChild(div);
-  });
-
-  setTimeout(startVote, 20000);
-}
-
-function shoot(div,s){
-  if(s.lie){
-    div.innerText = "THAT'S WRONG!";
-    score++;
-  } else {
-    div.innerText = "MISS";
-    health--;
-  }
-
-  updateUI();
-
-  if(health<=0){
-    gameOver();
-  }
-
-  setTimeout(()=>div.remove(),500);
-}
-
-function startVote(){
-  phase = "vote";
-  document.body.innerHTML = "<h1>Vote the killer</h1>";
-
-  ["Aiko","Ren","Mika"].forEach(name=>{
-    const b=document.createElement("button");
-    b.innerText=name;
-    b.onclick=()=>choose(name);
-    document.body.appendChild(b);
-  });
-}
-
-function choose(name){
-  if(name==="Ren"){
-    document.body.innerHTML="<h1>You solved it!</h1>";
-  } else {
-    document.body.innerHTML="<h1>Wrong... despair wins.</h1>";
-  }
-}
-
-function gameOver(){
-  document.body.innerHTML="<h1>GAME OVER</h1>";
-}
-
-// Start story
-nextStory();
+    // Controls
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') jump();
+    });
+    document.addEventListener('click', jump);
 </script>
 
 </body>
